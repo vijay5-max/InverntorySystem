@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import ApiError from "../utils/ApiError.js";
 
 export const createCategory = async (categoryData) => {
   const { category_name, description, status = "Active" } = categoryData;
@@ -10,7 +11,7 @@ export const createCategory = async (categoryData) => {
   );
 
   if (existing.length > 0) {
-    throw new Error("Category already exists");
+    throw new ApiError(409,"Category already exists");
   }
 
   // Insert category
@@ -59,7 +60,7 @@ export const getCategoryById = async (id) => {
   );
 
   if (categories.length === 0) {
-    throw new Error("Category not found");
+    throw new ApiError(404,"Category not found");
   }
 
   return categories[0];
@@ -75,7 +76,7 @@ export const updateCategory = async (id, categoryData) => {
   );
 
   if (existingCategory.length === 0) {
-    throw new Error("Category not found");
+    throw new ApiError(404,"Category not found");
   }
 
   // Check duplicate name (ignore current category)
@@ -85,7 +86,7 @@ export const updateCategory = async (id, categoryData) => {
   );
 
   if (duplicate.length > 0) {
-    throw new Error("Category name already exists");
+    throw new ApiError(409,"Category name already exists");
   }
 
   // Update category
@@ -113,7 +114,7 @@ export const deleteCategory = async (id) => {
   );
 
   if (existing.length === 0) {
-    throw new Error("Category not found");
+    throw new ApiError(404,"Category not found");
   }
 
   // Soft delete
