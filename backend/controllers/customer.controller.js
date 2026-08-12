@@ -84,3 +84,17 @@ export const deleteCustomer = asyncHandler(async (req, res) => {
   );
 
 });
+
+export const validateCustomer = asyncHandler(async (req, res) => {
+
+  const customer = await customerService.validateCustomer(
+    req.params.id
+  );
+
+  return ApiResponse.success(
+    res,
+    customer,
+    "Customer validated successfully"
+  );
+
+});

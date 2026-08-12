@@ -190,11 +190,9 @@ export const deleteSupplier = async (id) => {
     throw new ApiError(404, "Supplier not found");
   }
 
-  // Soft delete
+  //  delete
   await pool.query(
-    `UPDATE suppliers
-     SET status = 'Inactive'
-     WHERE id = ?`,
+    `DELETE FROM suppliers WHERE id = ?`,
     [id]
   );
 

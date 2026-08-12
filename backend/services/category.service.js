@@ -39,7 +39,7 @@ export const getAllCategories = async () => {
       created_at,
       updated_at
      FROM categories
-     ORDER BY created_at DESC`
+     ORDER BY created_at ASC`
   );
 
   return categories;
@@ -117,11 +117,20 @@ export const deleteCategory = async (id) => {
     throw new ApiError(404,"Category not found");
   }
 
+  const [products] = await pool.query(
+    "SELECT COUNT(*) AS total FROM products WHERE category_id = ?",
+    [id]
+  );
+
+  if (products[0].total > 0) {
+    throw new ApiError(
+      400,
+      "Cannot delete category because products are using this category"
+    );
+  }
   // Soft delete
   await pool.query(
-    `UPDATE categories
-     SET status = 'Inactive'
-     WHERE id = ?`,
+    `DELETE FROM categories WHERE id = ?`,
     [id]
   );
 

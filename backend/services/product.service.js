@@ -237,8 +237,7 @@ export const deleteProduct = async (id) => {
   }
 
   await pool.query(
-    `UPDATE products
-     SET status = 'Inactive'
+    `DELETE FROM products
      WHERE id = ?`,
     [id]
   );

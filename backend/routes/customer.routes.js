@@ -9,10 +9,13 @@ import {
   deleteCustomer,
 } from "../controllers/customer.controller.js";
 
+import { validateCustomer } from "../validators/customer.validator.js";
+
+
 const router = Router();
 
 // Create Customer
-router.post("/", authenticate, createCustomer);
+router.post("/", authenticate, validateCustomer, createCustomer,);
 
 // Get All Customers
 router.get("/", authenticate, getAllCustomers);
@@ -21,7 +24,7 @@ router.get("/", authenticate, getAllCustomers);
 router.get("/:id", authenticate, getCustomerById);
 
 // Update Customer
-router.put("/:id", authenticate, updateCustomer);
+router.put("/:id", authenticate,validateCustomer, updateCustomer);
 
 // Soft Delete Customer
 router.delete("/:id", authenticate, deleteCustomer);
