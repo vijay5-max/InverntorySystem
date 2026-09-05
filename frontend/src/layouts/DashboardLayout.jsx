@@ -2,21 +2,17 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../components/layout/Sidebar";
 import Topbar from "../components/layout/Topbar";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 text-black dark:bg-slate-950 dark:text-white">
 
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="ml-20 flex min-h-screen flex-col">
 
-        {/* Topbar */}
         <Topbar />
 
-        {/* Page Content */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 overflow-auto p-6">
           <Outlet />
         </main>
 

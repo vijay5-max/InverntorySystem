@@ -91,6 +91,7 @@ export const getAllProducts = async (query) => {
       p.selling_price,
       p.quantity,
       p.status,
+      p.image,
       c.category_name
     FROM products p
     INNER JOIN categories c
@@ -237,8 +238,9 @@ export const deleteProduct = async (id) => {
   }
 
   await pool.query(
-    `DELETE FROM products
-     WHERE id = ?`,
+    `UPDATE products
+    SET status = 'Inactive'
+    WHERE id = ?`,
     [id]
   );
 

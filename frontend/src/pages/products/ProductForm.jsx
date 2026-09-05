@@ -1,4 +1,15 @@
 import { useEffect, useState } from "react";
+import {
+  Package,
+  ScanBarcode,
+  Tags,
+  IndianRupee,
+  Boxes,
+  Palette,
+  Ruler,
+  Image,
+  Tag,
+} from "lucide-react";
 
 export default function ProductForm({
   initialData = null,
@@ -33,6 +44,19 @@ export default function ProductForm({
         size: initialData.size || "",
         brand: initialData.brand || "",
         image: initialData.image || "",
+      });
+    } else {
+      setFormData({
+        product_name: "",
+        category_id: "",
+        barcode: "",
+        purchase_price: "",
+        selling_price: "",
+        quantity: 0,
+        color: "",
+        size: "",
+        brand: "",
+        image: "",
       });
     }
   }, [initialData]);
@@ -78,169 +102,328 @@ export default function ProductForm({
     });
   };
 
+  const isEdit = Boolean(initialData);
+
+  const inputClass = `
+    w-full
+    rounded-xl
+    border border-slate-200
+    bg-slate-50
+    px-4
+    py-3
+    text-sm
+    text-slate-900
+    outline-none
+    transition
+    placeholder:text-slate-400
+    focus:border-blue-500
+    focus:bg-white
+    focus:ring-4
+    focus:ring-blue-500/10
+    dark:border-slate-700
+    dark:bg-slate-800
+    dark:text-white
+    dark:placeholder:text-slate-500
+    dark:focus:bg-slate-800
+  `;
+
+  const labelClass = `
+    mb-2
+    block
+    text-sm
+    font-semibold
+    text-slate-700
+    dark:text-slate-300
+  `;
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-4"
-    >
-      <div className="col-span-2">
-        <label className="block mb-1 font-medium text-gray-700 text-sm">
+    <form onSubmit={handleSubmit} 
+    className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+      {/* Product Name */}
+      <div className="md:col-span-2">
+        <label className={labelClass}>
           Product Name
         </label>
 
-        <input
-          type="text"
-          name="product_name"
-          value={formData.product_name}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
+        <div className="relative">
+          <Package
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+
+          <input
+            type="text"
+            name="product_name"
+            value={formData.product_name}
+            onChange={handleChange}
+            placeholder="Enter product name"
+            className={`${inputClass} pl-11`}
+          />
+        </div>
       </div>
 
-      <div>
-        <label className="block mb-1 font-medium text-gray-700 text-sm">
-          Category
-        </label>
+      {/* Category + Barcode */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 
-        <select
-          name="category_id"
-          value={formData.category_id}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        >
-          <option value="">
-            Select Category
-          </option>
+        <div>
+          <label className={labelClass}>
+            Category
+          </label>
 
-          {categories.map((category) => (
-            <option
-              key={category.id}
-              value={category.id}
+          <div className="relative">
+            <Tags
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+            />
+
+            <select
+              name="category_id"
+              value={formData.category_id}
+              onChange={handleChange}
+              className={`${inputClass} appearance-none pl-11`}
             >
-              {category.category_name}
-            </option>
-          ))}
-        </select>
+              <option value="">
+                Select Category
+              </option>
+
+              {categories.map((category) => (
+                <option
+                  key={category.id}
+                  value={category.id}
+                >
+                  {category.category_name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label className={labelClass}>
+            Barcode
+          </label>
+
+          <div className="relative">
+            <ScanBarcode
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+            />
+
+            <input
+              type="text"
+              name="barcode"
+              value={formData.barcode}
+              onChange={handleChange}
+              placeholder="Enter barcode"
+              className={`${inputClass} pl-11`}
+            />
+          </div>
+        </div>
+
       </div>
 
-      <div>
-        <label className="block mb-1 font-medium text-gray-700 text-sm">
-          Barcode
-        </label>
+      {/* Pricing */}
+      <div className="md:col-span-2">
+        <div className="mb-3 flex items-center gap-2">
+          <IndianRupee
+            size={18}
+            className="text-blue-600 dark:text-blue-400"
+          />
 
-        <input
-          type="text"
-          name="barcode"
-          value={formData.barcode}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+            Pricing
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+          <div>
+            <label className={labelClass}>
+              Purchase Price
+            </label>
+
+            <input
+              type="number"
+              name="purchase_price"
+              value={formData.purchase_price}
+              onChange={handleChange}
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className={labelClass}>
+              Selling Price
+            </label>
+
+            <input
+              type="number"
+              name="selling_price"
+              value={formData.selling_price}
+              onChange={handleChange}
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              className={inputClass}
+            />
+          </div>
+
+        </div>
       </div>
 
+      {/* Inventory */}
       <div>
-        <label className="block mb-1 font-medium text-gray-700 text-sm">
-          Purchase Price
-        </label>
+        <div className="mb-3 flex items-center gap-2">
+          <Boxes
+            size={18}
+            className="text-blue-600 dark:text-blue-400"
+          />
 
-        <input
-          type="number"
-          name="purchase_price"
-          value={formData.purchase_price}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+            Inventory Details
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+          <div>
+            <label className={labelClass}>
+              Quantity
+            </label>
+
+            <input
+              type="number"
+              name="quantity"
+              value={formData.quantity}
+              onChange={handleChange}
+              min="0"
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className={labelClass}>
+              Brand
+            </label>
+
+            <div className="relative">
+              <Tag
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+
+              <input
+                type="text"
+                name="brand"
+                value={formData.brand}
+                onChange={handleChange}
+                placeholder="Brand"
+                className={`${inputClass} pl-11`}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelClass}>
+              Size
+            </label>
+
+            <div className="relative">
+              <Ruler
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+
+              <input
+                type="text"
+                name="size"
+                value={formData.size}
+                onChange={handleChange}
+                placeholder="Size"
+                className={`${inputClass} pl-11`}
+              />
+            </div>
+          </div>
+
+        </div>
       </div>
 
+      {/* Color */}
       <div>
-        <label className="block mb-1 font-medium text-sm text-gray-700">
-          Selling Price
-        </label>
-
-        <input
-          type="number"
-          name="selling_price"
-          value={formData.selling_price}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
-      </div>
-
-      <div>
-        <label className="block mb-1 font-medium text-gray-700 text-sm">
-          Quantity
-        </label>
-
-        <input
-          type="number"
-          name="quantity"
-          value={formData.quantity}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
-      </div>
-
-      <div>
-        <label className="block mb-1 font-medium text-sm text-gray-700">
-          Brand
-        </label>
-
-        <input
-          type="text"
-          name="brand"
-          value={formData.brand}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
-      </div>
-
-      <div>
-        <label className="block mb-1 font-medium text-sm text-gray-700">
+        <label className={labelClass}>
           Color
         </label>
 
-        <input
-          type="text"
-          name="color"
-          value={formData.color}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
+        <div className="md:col-span-2">
+          <Palette
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+
+          <input
+            type="text"
+            name="color"
+            value={formData.color}
+            onChange={handleChange}
+            placeholder="Enter color"
+            className={`${inputClass} pl-11`}
+          />
+        </div>
       </div>
 
+      {/* Image */}
       <div>
-        <label className="block mb-1 font-medium text-sm text-gray-700">
-          Size
-        </label>
+        <div className="mb-2 flex items-center gap-2">
+          <Image
+            size={18}
+            className="text-slate-500 dark:text-slate-400"
+          />
 
-        <input
-          type="text"
-          name="size"
-          value={formData.size}
-          onChange={handleChange}
-          className="w-full border rounded p-2 border-gray-300 py-2.5"
-        />
-      </div>
-
-      <div className="col-span-2">
-        <label className="block mb-1 font-medium text-gray-700 text-sm">
-          Image URL
-        </label>
+          <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            Product Image
+          </label>
+        </div>
 
         <input
           type="text"
           name="image"
           value={formData.image}
           onChange={handleChange}
-          className="w-full border rounded p-2"
           placeholder="https://example.com/image.jpg"
+          className={inputClass}
         />
+
+        <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+          Add a public image URL for the product.
+        </p>
       </div>
 
-      <div className="col-span-2 flex justify-end gap-2 mt-4">
+      {/* Buttons */}
+      <div className="flex items-center justify-end gap-3 border-t border-slate-100 pt-5 dark:border-slate-800">
+
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 bg-gray-500 text-white rounded"
+          className="
+            rounded-xl
+            border border-slate-200
+            bg-white
+            px-5
+            py-2.5
+            text-sm
+            font-semibold
+            text-slate-700
+            transition
+            hover:bg-slate-50
+            dark:border-slate-700
+            dark:bg-slate-800
+            dark:text-slate-200
+            dark:hover:bg-slate-700
+          "
         >
           Cancel
         </button>
@@ -248,11 +431,31 @@ export default function ProductForm({
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded"
+          className="
+            rounded-xl
+            bg-blue-600
+            px-5
+            py-2.5
+            text-sm
+            font-semibold
+            text-white
+            shadow-sm
+            transition
+            hover:bg-blue-700
+            hover:shadow-md
+            disabled:cursor-not-allowed
+            disabled:opacity-60
+          "
         >
-          {loading ? "Saving..." : "Save Product"}
+          {loading
+            ? "Saving..."
+            : isEdit
+            ? "Update Product"
+            : "Save Product"}
         </button>
+
       </div>
+
     </form>
   );
 }

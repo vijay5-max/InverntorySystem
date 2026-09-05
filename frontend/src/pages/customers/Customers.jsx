@@ -98,21 +98,37 @@ export default function Customers() {
 
         <button
           onClick={handleAdd}
-          className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-700"
         >
           + Add Customer
         </button>
 
       </div>
 
-      <div className="bg-white rounded shadow p-4 mb-6">
+      <div className="bg-white-500 rounded shadow p-4 mb-10">
 
         <input
           type="text"
           placeholder="Search customer..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border rounded p-2 w-full md:w-80"
+          className="
+                w-80
+                rounded-lg
+                border
+                border-gray-300
+                bg-white
+                px-3
+                py-2
+                text-black
+                outline-none
+                placeholder:text-gray-400
+                focus:border-blue-500
+                dark:border-slate-600
+                dark:bg-slate-900
+                dark:text-white
+                dark:placeholder:text-gray-500
+              "
         />
 
       </div>

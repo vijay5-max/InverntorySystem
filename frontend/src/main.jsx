@@ -6,16 +6,20 @@ import "./index.css";
 import AppRoutes from "./routes/AppRoutes";
 
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/TemeContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 
   <React.StrictMode>
+    <ThemeProvider>
 
-    <AuthProvider>
+      <AuthProvider>
 
-      <AppRoutes />
+        <AppRoutes />
 
-    </AuthProvider>
+      </AuthProvider>
+      
+    </ThemeProvider>
 
   </React.StrictMode>
 

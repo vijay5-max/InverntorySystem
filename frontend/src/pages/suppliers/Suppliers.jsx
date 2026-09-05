@@ -142,7 +142,7 @@ export default function Suppliers() {
           placeholder="Search supplier..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border rounded p-2 w-80"
+          className="border border-gray-300 rounded p-2 w-full bg-white text-black dark:bg-slate-800 dark:border-slate-600 dark:text-white"
         />
 
       </div>

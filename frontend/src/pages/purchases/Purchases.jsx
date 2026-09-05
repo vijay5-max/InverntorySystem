@@ -168,45 +168,60 @@ export default function Purchases() {
   };
 
   return (
+    <div className="p-6 bg-gray-50 min-h-full">
 
-    <div className="p-6">
+      {/* Header */}
 
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex items-center justify-between mb-8">
 
-        <h1 className="text-3xl font-bold">
-          Purchases
-        </h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Purchases
+          </h1>
+
+          <p className="mt-1 text-sm text-gray-500">
+            Manage your purchase transactions
+          </p>
+        </div>
 
         <button
-          onClick={() => setShowForm(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={() => {
+            setShowForm(true);
+            setSelectedPurchase(null);
+          }}
+          className="
+            bg-blue-600
+            hover:bg-blue-700
+            text-white
+            px-5
+            py-3
+            rounded-xl
+            font-medium
+            shadow-sm
+            transition
+          "
         >
           + New Purchase
         </button>
 
       </div>
 
-      {loading ? (
+      {/* Purchase Table */}
 
-        <p>Loading...</p>
+      <PurchaseTable
+        purchases={purchases}
+        onView={handleView}
+        onDelete={handleDelete}
+      />
 
-      ) : (
-
-        <PurchaseTable
-          purchases={purchases}
-          onView={handleView}
-          onDelete={handleDelete}
-        />
-
-      )}
+      {/* Your existing purchase form/modal stays here */}
 
       {showForm && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-[900px] max-w-[95%] max-h-[90vh] overflow-y-auto">
 
-          <div className="bg-white rounded-lg shadow-xl p-6 w-[1100px]">
-
-            <h2 className="text-2xl font-bold mb-6">
+            <h2 className="text-2xl font-bold mb-5">
               New Purchase
             </h2>
 
@@ -215,16 +230,14 @@ export default function Purchases() {
               products={products}
               onSubmit={handleCreate}
               onCancel={() => setShowForm(false)}
+              loading={loading}
             />
 
           </div>
 
         </div>
-
       )}
 
     </div>
-
   );
-
 }
